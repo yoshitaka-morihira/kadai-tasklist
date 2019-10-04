@@ -4,17 +4,14 @@ class TasksController < ApplicationController
   before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
-    if logged_in?
-      @task = current_user.tasks.build  # form_with 用
-      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
-    end
+    @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
   end
 
   def show
   end
 
   def new
-    @task = Task.new
+    @task = current_user.tasks.build
   end
 
   def create
@@ -28,17 +25,6 @@ class TasksController < ApplicationController
       render :new
     end
     
-=begin
-    @task = Task.new(task_params)
-
-    if @task.save
-      flash[:success] = 'Task が正常に投稿されました'
-      redirect_to @task
-    else
-      flash.now[:danger] = 'Task が投稿されませんでした'
-      render :new
-    end
-=end
   end
 
   def edit
